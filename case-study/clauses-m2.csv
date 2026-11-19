@@ -1,0 +1,29 @@
+principle,clause_id,prohibited_act,covered,borderline,reach,gate,detector_kind,self_tested
+I,I-a,"Writing code ""to explore"" and promoting the exploration to a feature without going through the specification cycle",no,no,—,none,review_only,n.a.
+II,II-a,The same concept under two different names in any layer of the system,no,no,—,none,warning_only,n.a.
+II,II-b,Two different concepts under the same name in any layer of the system,no,no,—,none,warning_only,n.a.
+III,III-a,Recording language-model output as a clinical or operational fact without a deterministic origin or a traceable human validation,yes,no,instance,ci,test;db_trigger,yes
+IV,IV-a,Automatic delivery to the patient of unsigned interpretive text,yes,yes,instance,ci,test,yes
+IV,IV-b,A user interface that presents an AI suggestion with the same visual hierarchy as a validated report,no,no,—,none,none,n.a.
+V,V-a,Agent output persisted or displayed without a link to its sources,yes,no,instance,ci,test;db_constraint,yes
+V,V-b,Model confidence used as a substitute for evidence,no,no,—,none,none,n.a.
+VI,VI-a,Storing image pixel data outside the imaging archive,no,no,—,none,none,n.a.
+VI,VI-b,A data structure whose loss makes the system state unrecoverable from the imaging archive plus the transactional database,no,no,—,none,none,n.a.
+VII,VII-a,A read endpoint for clinical data without an access record,yes,no,instance,ci,test,no
+VII,VII-b,An agent action without its own identity in the audit trail,yes,no,instance,ci,test,yes
+VIII,VIII-a,A query without a tenant filter,yes,no,general,ci,static_guard;db_grant_inventory;test,no
+VIII,VIII-b,"A cache, search index or agent context shared across tenants without verified isolation",yes,no,instance,ci,test,yes
+IX,IX-a,A new personal-data flow without a legal basis documented in the specification,no,no,—,none,none,n.a.
+IX,IX-b,Identified personal data in a development or evaluation environment,no,no,—,none,none,n.a.
+X,X-a,Deploying an agent without a passing evaluation,yes,no,instance,ci,ci_step;runtime_gate;test,yes
+X,X-b,A message to a patient or physician carrying a value not checked against the read model,yes,no,instance,ci,test;ci_step,yes
+XI,XI-a,Sending a result to an unverified contact number,no,no,—,none,none,n.a.
+XI,XI-b,Executing an instruction from an external channel without the guards applied to any untrusted input,yes,no,not_classified,ci,test,yes
+XII,XII-a,Internal or external claims ahead of operational reality,no,no,—,none,none,n.a.
+XIII,XIII-a,Code identifiers written in the local language instead of English,no,no,—,none,none,n.a.
+XIII,XIII-b,Business documentation written in English instead of the local language,no,no,—,none,none,n.a.
+XIV,XIV-a,A proprietary dependency without a decision record,no,no,—,none,none,n.a.
+XIV,XIV-b,An internal data format without a standard export path,no,no,—,none,none,n.a.
+XV,XV-a,Deleting real patient clinical data before its retention period has expired,yes,no,general,ci,db_grant_inventory;db_trigger;test,no
+XV,XV-b,Hard deletion of sensitive data without an immutable record of the act and its reason,yes,no,general,ci,db_grant_inventory;db_trigger;test,no
+XVI,XVI-a,"A homegrown mechanism where a mature international standard exists, without a decision record",no,no,—,none,none,n.a.

@@ -1,0 +1,38 @@
+principle,clause_id,prohibited_act,covered,borderline,reach,gate,detector_kind,self_tested
+I,I.1,"Starting to write code ""to explore""",no,no,—,none,review_only,n.a.
+I,I.2,Promoting an exploration to a feature without going through the specification cycle,no,no,—,none,none,n.a.
+II,II.1,The same concept under two different names in any layer of the system,no,no,—,none,warning_only,n.a.
+II,II.2,Two different concepts under the same name in any layer of the system,no,no,—,none,warning_only,n.a.
+III,III.1,Recording language-model output as a clinical fact without a deterministic origin or a traceable human validation,no,no,—,none,none,n.a.
+III,III.2,Recording language-model output as an operational fact without a deterministic origin or a traceable human validation,no,yes,—,ci,test,n.a.
+IV,IV.1,Automatic delivery to the patient of unsigned interpretive text,no,no,—,none,none,n.a.
+IV,IV.2,A user interface that presents an AI suggestion with the same visual hierarchy as a validated report,no,no,—,none,none,n.a.
+V,V.1,Agent output persisted without a link to its sources,yes,yes,instance,ci,test;db_constraint,yes
+V,V.2,Agent output displayed without a link to its sources,no,no,—,none,none,n.a.
+V,V.3,Model confidence used as a substitute for evidence,yes,no,instance,ci,test,yes
+VI,VI.1,Storing image pixel data outside the imaging archive,no,no,—,none,none,n.a.
+VI,VI.2,A data structure whose loss makes the system state unrecoverable from the imaging archive plus the transactional database,no,no,—,none,review_only,n.a.
+VII,VII.1,A read endpoint for clinical data without an access record,yes,no,instance,ci,test,no
+VII,VII.2,An agent action without its own identity in the audit trail,yes,no,instance,ci,test,yes
+VIII,VIII.1,A query without a tenant filter,yes,no,general,ci,static_guard;db_grant_inventory;test,no
+VIII,VIII.2,A cache shared across tenants without verified isolation,yes,no,instance,ci,test,no
+VIII,VIII.3,A search index shared across tenants without verified isolation,yes,no,instance,ci,test,no
+VIII,VIII.4,An agent context shared across tenants without verified isolation,yes,no,instance,ci,test;ci_step,no
+IX,IX.1,A new personal-data flow without a legal basis documented in the specification,no,no,—,none,none,n.a.
+IX,IX.2,Identified personal data in a development environment,no,no,—,none,none,n.a.
+IX,IX.3,Identified personal data in an evaluation environment,no,no,—,none,none,n.a.
+X,X.1,Deploying an agent without a passing evaluation,yes,yes,instance,ci,ci_step;runtime_gate;test,yes
+X,X.2,A message to a patient carrying a value not checked against the read model,no,no,—,none,none,n.a.
+X,X.3,A message to a physician carrying a value not checked against the read model,no,yes,—,ci,test;ci_step,n.a.
+XI,XI.1,Sending a result to an unverified contact number,no,no,—,none,none,n.a.
+XI,XI.2,Executing an instruction from an external channel without the guards applied to any untrusted input,no,no,—,none,none,n.a.
+XII,XII.1,Internal claims ahead of operational reality,no,no,—,none,review_only,n.a.
+XII,XII.2,External claims ahead of operational reality,no,no,—,none,review_only,n.a.
+XIII,XIII.1,Code identifiers written in the local language instead of English,yes,no,instance,ci,static_guard,yes
+XIII,XIII.2,Business documentation written in English instead of the local language,no,no,—,none,none,n.a.
+XIV,XIV.1,A proprietary dependency without a decision record,no,no,—,none,none,n.a.
+XIV,XIV.2,An internal data format without a standard export path,no,no,—,none,none,n.a.
+XV,XV.1,"Deleting, manually or automatically, real patient clinical data whose retention period has not expired",yes,no,general,ci,db_grant_inventory;db_trigger;test,no
+XV,XV.2,Hard deletion of sensitive data without an immutable record of the act and its reason in the audit trail,yes,no,general,ci,db_grant_inventory;db_trigger;test,no
+XVI,XVI.1,Inventing a homegrown mechanism where a mature international standard exists,no,no,—,none,review_only,n.a.
+XVI,XVI.2,Adopting a proprietary mechanism where a mature international standard exists,no,no,—,none,review_only,n.a.

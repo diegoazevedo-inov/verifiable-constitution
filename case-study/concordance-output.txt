@@ -1,0 +1,36 @@
+principles: 16
+M1: full 2 / partial 6 / none 8
+M2: full 5 / partial 3 / none 8
+M3: full 3 / partial 3 / none 10
+
+== M2 x M3 ==
+principles compared (n=14): I II III IV VI VII VIII IX X XI XII XIV XV XVI  (excluded: V XIII)
+raw agreement: 10/14 = 0.714
+divergent: III (full x none), IV (partial x none), X (full x partial), XI (partial x none)
+matrix (rows = first assessor, columns = second; order none, partial, full):
+    none     [7, 0, 0]
+    partial  [2, 0, 0]
+    full     [1, 1, 3]
+Cohen's kappa (unweighted): 0.486
+Cohen's kappa (linear weights): 0.611  (observed disagreement 0.1786, expected 0.4592)
+
+== M1 x M2 ==
+principles compared (n=12): I II IV VI VIII IX XI XII XIII XIV XV XVI  (excluded: III V VII X)
+raw agreement: 10/12 = 0.833
+divergent: IX (partial x none), XI (none x partial)
+matrix (rows = first assessor, columns = second; order none, partial, full):
+    none     [7, 1, 0]
+    partial  [1, 1, 0]
+    full     [0, 0, 2]
+Cohen's kappa (unweighted): 0.667
+Cohen's kappa (linear weights): 0.769  (observed disagreement 0.0833, expected 0.3611)
+
+== Clause files ==
+clauses-m2.csv: 28 clauses, 12 covered; derived classes match principles.csv: yes
+    strict reading (borderline clauses not covered): 11 of 28 clauses; full 5 / partial 2 / none 9
+    broad reading (borderline clauses covered): 12 of 28 clauses; full 5 / partial 3 / none 8
+clauses-m3.csv: 37 clauses, 12 covered; derived classes match principles.csv: yes
+    strict reading (borderline clauses not covered): 10 of 37 clauses; full 3 / partial 2 / none 11
+    broad reading (borderline clauses covered): 14 of 37 clauses; full 3 / partial 4 / none 9
+
+Caveat: small n (14 and 12 principles, 3 categories); values are unstable, with no useful confidence interval.

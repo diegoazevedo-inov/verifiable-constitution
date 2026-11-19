@@ -1,0 +1,17 @@
+id,generic_name,tier,status_report_declared,m1,m2,m3,reach_m2,reach_m3,behaviour_changed_m1_m2,behaviour_changed_m2_m3
+I,Specification before code,4_engineering_discipline,complied,none,none,none,—,—,no,no
+II,Domain before screen (one name per concept),4_engineering_discipline,complied,none,none,none,—,—,no,no
+III,Deterministic core,1_recipient_safety,partial,partial,full,none,instance,—,yes,no
+IV,Professional validation as invariant,1_recipient_safety,complied,partial,partial,none,instance,—,no,no
+V,Evidence traceability,4_engineering_discipline,not_yet,partial,partial,partial,instance,instance,yes,yes
+VI,Imaging archive as source of truth,3_source_of_truth_integrity,complied,none,none,none,—,—,no,no
+VII,"Audit everything, including reads and agents",2_privacy_legal_compliance,complied,partial,full,full,instance,instance,yes,no
+VIII,Tenant isolation,2_privacy_legal_compliance,complied,full,full,full,mixed,mixed,no,no
+IX,Data protection by architecture,2_privacy_legal_compliance,partial,partial,none,none,—,—,no,no
+X,"Anti-hallucination, evaluation required",1_recipient_safety,not_yet,partial,full,partial,instance,instance,yes,no
+XI,"Safe, consented, verified channel",2_privacy_legal_compliance,not_yet,none,partial,none,not_classified,—,no,no
+XII,Honesty about maturity,4_engineering_discipline,complied,none,none,none,—,—,no,no
+XIII,"Business text in local language, code in English",4_engineering_discipline,complied,none,none,partial,—,instance,no,yes
+XIV,"Open, no lock-in",4_engineering_discipline,partial,none,none,none,—,—,no,no
+XV,Immutability and clinical retention,1_recipient_safety,complied,full,full,full,general,general,no,no
+XVI,Anchoring in international standards,4_engineering_discipline,complied,none,none,none,—,—,no,no
