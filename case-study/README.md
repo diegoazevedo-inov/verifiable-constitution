@@ -22,9 +22,10 @@ Principles whose behaviour changed between two measured commits are marked in `p
 
 How the measurements were made (author's account; it cannot be verified from this repository):
 
-- Each measurement was carried out by an LLM agent session instructed with the written criterion below.
-- The sessions only read the repository at a fixed commit. Nothing was written to the repository or to any database, and every count rests on a recorded command output.
-- Each session worked without the earlier reports. M3 ran in a fresh session with no access to M1, M2, memory files or transcripts.
+- Each measurement was carried out by an LLM agent session (Claude Code, by Anthropic, with the Claude Opus 5.5 model) instructed with a criterion written by the author. The same model was used to write the fixes in the measured system.
+- The sessions only read the repository at a fixed commit. Nothing was written to the repository or to any database. Counts of files, tests, scenarios and CI runs rest on recorded command outputs; the clause decomposition and the classifications are the assessors' judgement.
+- Each measurement ran in a separate session and did not receive the earlier reports. The repository read by M2 and M3, however, contained the specification of the fixes, which summarises the earlier results; the measurements are therefore separate, not independent. M3 had no access to memory files or session transcripts.
+- M1 classified each principle from its prohibitions, without decomposing clauses or requiring a gate; M2 and M3 applied the criterion below.
 - The author reviewed the three reports. The data here transcribe their classifications; nothing was reclassified.
 
 ## Criterion

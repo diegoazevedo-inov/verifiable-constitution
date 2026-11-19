@@ -44,7 +44,7 @@ C1 Deterministic core; the model only proposes · C2 The model chooses, it does 
 ## Limits
 
 - The example is deliberately small. Tenant isolation is emulated with tenant-scoped views and triggers keyed to a session-tenant table set by the application; SQLite has no grants or roles, so a new read of a base table is not stopped, and the database guarantees do not hold against a schema change (dropping a trigger), a direct write to the session-tenant table or a connection with recursive triggers off. Production systems should rely on database row-level security and on a schema-owner role that the application does not hold.
-- Coverage is ordinal and per clause. Two independent measurements of the same system can classify some clauses differently; a second rater is recommended.
+- Coverage is ordinal and per clause. Two separate measurements of the same system can classify some clauses differently; a second rater is recommended.
 - A check with `instance` reach does not protect a new path (a new task, a new endpoint). Record the reach next to the coverage.
 
 ## License
