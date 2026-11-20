@@ -1,6 +1,6 @@
 # Case study: three coverage measurements
 
-Anonymised data of the case study in the accompanying manuscript: the per-principle and per-clause verification coverage of one system, measured three times, and the script that computes the agreement between assessors.
+Anonymised data of the case study in the accompanying manuscript (D. S. Azevedo, "Verifiable constitutions for LLM-agent systems in regulated domains: binding each principle to an executable check", submitted to the Journal of Systems and Software in November 2026): the per-principle and per-clause verification coverage of one system, measured three times, and the script that computes the agreement between assessors.
 
 What this repository supports: the arithmetic (totals, raw agreement, kappa and weighted kappa) and the consistency between the clause files and the principle classes, both checked by `checks/test_case_study.py`. It does not support the classifications themselves, which are the author's transcription of the assessors' reports; neither the reports nor the measured code are included.
 
@@ -96,6 +96,7 @@ Totals (full / partial / none): M1 2 / 6 / 8, M2 5 / 3 / 8, M3 3 / 3 / 10. Cover
 
 - Small n: 12 and 14 principles in three ordinal categories. The kappa values are unstable and are reported as a baseline, not as a property of the measure.
 - The clause decomposition is manual. The same 16 blocks gave 28 clauses in M2 and 37 in M3.
+- M1 used a coarser criterion than M2 and M3 (no clause decomposition, no gate requirement), so the M1 × M2 comparison mixes two criteria.
 - The assessors were LLM agent sessions, reviewed by the author. Human assessors might disagree differently.
 - One system, built and fixed by the same author who designed the pattern.
 - `tier`, `self_tested` and the generic names were transcribed or derived from the reports and the constitution by the author; they were not produced by the assessors in this form.

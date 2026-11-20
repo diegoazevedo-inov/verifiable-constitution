@@ -118,8 +118,35 @@ def c3a_items_unchecked():  # the database accepts evidence items without a code
     return schema_without(trigger("proposals_evidence_items"))
 
 
+def c3a_whitespace_value_accepted():  # the database takes a value of tabs or line breaks as non-empty (spaces only)
+    return schema_without("trim(json_extract(e.value, '$.value'), ' ' || char(9, 10, 11, 12, 13)) = ''",
+                          "trim(json_extract(e.value, '$.value')) = ''")
+
+
 def c3b():  # confidence accepted as evidence
     return patched(wb, "CONFIDENCE_CODE", __import__("re").compile(r"$^"))
+
+
+def c3b_single_item_only():  # confidence refused only when it is the single evidence item
+    original = wb.assert_evidence
+
+    def assert_evidence(evidence):
+        if isinstance(evidence, list) and len(evidence) > 1:
+            evidence = [*evidence, {"code": "PLANTED_FACT", "value": 1}]  # every item is still checked; the rule never fires
+        original(evidence)
+    return patched(wb, "assert_evidence", assert_evidence)
+
+
+CONFIDENCE_WORDS = "(CONFIDENCE|SCORE|PROBABILITY|CERTAINTY|LIKELIHOOD)"
+
+
+def c3b_substring_rule():  # confidence words matched anywhere in the code, not as words (SCOREBOARD_ID refused)
+    assert wb.CONFIDENCE_CODE.pattern == rf"(^|_){CONFIDENCE_WORDS}(_|$)"
+    return patched(wb, "CONFIDENCE_CODE", __import__("re").compile(CONFIDENCE_WORDS))
+
+
+def c3b_whole_code_rule():  # only a code that is exactly a confidence word counts (MODEL_SCORE accepted)
+    return patched(wb, "CONFIDENCE_CODE", __import__("re").compile(rf"^{CONFIDENCE_WORDS}$"))
 
 
 # --- C4 ----------------------------------------------------------------------------------------
@@ -230,6 +257,19 @@ def c6c_inserted_decided():  # a proposal may be inserted already decided, skipp
     return schema_without(trigger("proposals_inserted_pending"))
 
 
+def c6c_inserted_with_status():  # the pending rule checks only the approver: a decided status without one is accepted
+    text = trigger("proposals_inserted_pending")
+    assert "NEW.status IS NOT 'PENDING' OR " in text
+    return schema_without(text, text.replace("NEW.status IS NOT 'PENDING' OR ", ""))
+
+
+def c6c_decided_from_other_session():  # the decision is checked against the approver's tenant but not the session's
+    text = trigger("proposals_decided_in_tenant")
+    fragment = "OLD.tenant_id IS NOT (SELECT tenant_id FROM session_tenant)\n    OR "
+    assert fragment in text
+    return schema_without(text, text.replace(fragment, ""))
+
+
 def c6d():  # effect without tenant scope, in the service and in the database
     def apply_effect(self, item_id, target_id):
         self.conn.execute("UPDATE work_items SET assignee_id = ? WHERE id = ?", (target_id, item_id))
@@ -317,8 +357,12 @@ MUTANTS = {
     "C1.b": [("model failure propagates, no deterministic floor", c1b)],
     "C2.a": [("model may name any id", c2a)],
     "C3.a": [("evidence enforced neither in the service nor in the database", c3a),
-             ("database accepts evidence items without code or value", c3a_items_unchecked)],
-    "C3.b": [("confidence codes accepted as evidence", c3b)],
+             ("database accepts evidence items without code or value", c3a_items_unchecked),
+             ("database accepts a value made only of tabs or line breaks", c3a_whitespace_value_accepted)],
+    "C3.b": [("confidence codes accepted as evidence", c3b),
+             ("confidence refused only as the single evidence item", c3b_single_item_only),
+             ("confidence words matched inside other words", c3b_substring_rule),
+             ("confidence recognised only as the whole code", c3b_whole_code_rule)],
     "C4.a": [("approval recorded as SYSTEM", c4a_effect_as_system),
              ("rejection not recorded", c4a_rejection_not_recorded)],
     "C4.b": [("any role may approve", c4b)],
@@ -341,6 +385,8 @@ MUTANTS = {
     "C6.c": [("approver looked up without tenant filter", c6c_approver_unscoped),
              ("database accepts decision by another tenant's user", c6c_decision_unchecked),
              ("proposal may be inserted already decided", c6c_inserted_decided),
+             ("proposal may be inserted decided without an approver", c6c_inserted_with_status),
+             ("decision accepted from another tenant's session", c6c_decided_from_other_session),
              ("approver may change tenant or id", c6_user_identity_mutable),
              ("approver may be deleted", c6_referenced_user_deletable)],
     "C6.d": [("effect without tenant scope in service and database", c6d),

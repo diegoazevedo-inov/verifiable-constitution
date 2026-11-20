@@ -107,11 +107,39 @@ class C3(Base):
         self.conn.execute(insert, ('[{"code": "OPEN_LOAD", "value": 0}]',))
         self.assertEqual(self.count("proposals"), 1, "evidence with a code and a value must be accepted")
 
+    def test_c3_database_rejects_whitespace_only_value(self):
+        self.bench()  # session tenant A, so only the evidence trigger can refuse the row
+        insert = ("INSERT INTO proposals (id, tenant_id, item_id, proposer, target_id, evidence) "
+                  "VALUES (?,'A','item-1','RULE','pro-a2',?)")
+        for i, value in enumerate(("\t", "\n", "\r\n", " \t\n\r ", "\x0b\x0c")):
+            self.refused(insert, (f"w{i}", json.dumps([{"code": "OPEN_LOAD", "value": value}])), msg=repr(value))
+        self.assertEqual(self.count("proposals"), 0)
+        self.conn.execute(insert, ("x", json.dumps([{"code": "OPEN_LOAD", "value": "\tbusy\n"}])))
+        self.assertEqual(self.count("proposals"), 1, "a value with text around white space must be accepted")
+
     def test_c3_confidence_is_not_evidence(self):
         for ev in ([{"code": "CONFIDENCE", "value": 0.9}], [{"code": "MODEL_SCORE", "value": 0.8}]):
             with self.assertRaises(wb.EvidenceError):
                 self.bench().propose("item-1", "pro-a2", ev)
         self.bench().propose("item-1", "pro-a2", [{"code": "OPEN_LOAD", "value": 0}, {"code": "CONFIDENCE", "value": 0.9}])
+
+    def test_c3_confidence_only_evidence_with_several_items_is_rejected(self):
+        for ev in ([{"code": "CONFIDENCE", "value": 0.9}, {"code": "MODEL_SCORE", "value": 0.8}],
+                   [{"code": "MATCH_PROBABILITY", "value": 0.7}, {"code": "CONFIDENCE", "value": 0.9},
+                    {"code": "LIKELIHOOD", "value": 0.6}]):
+            with self.assertRaises(wb.EvidenceError, msg=ev):
+                self.bench().propose("item-1", "pro-a2", ev)
+        self.assertEqual(self.count("proposals"), 0)
+
+    def test_c3_confidence_is_recognised_as_a_word(self):
+        # a confidence word delimited by the start or end of the code or by an underscore counts as confidence
+        for code in ("MODEL_SCORE", "SCORE_V2", "LOW_CONFIDENCE_FLAG"):
+            with self.assertRaises(wb.EvidenceError, msg=code):
+                self.bench().propose("item-1", "pro-a2", [{"code": code, "value": 0.8}])
+        # the same letters inside another word do not
+        for code in ("SCOREBOARD_ID", "UNDERSCORE_COUNT"):
+            self.bench().propose("item-1", "pro-a2", [{"code": code, "value": 7}])
+        self.assertEqual(self.count("proposals"), 2)
 
 
 class C4(Base):
@@ -268,6 +296,28 @@ class C6(Base):
         self.assertEqual(self.conn.execute("SELECT id, status, decided_by FROM proposals").fetchall(),
                          [(pid, "PENDING", None)])
         self.assertIsNone(self.assignee("item-1"))
+
+    def test_c6_proposal_is_inserted_pending(self):
+        self.bench(tenant="A")  # same tenant, valid item and target: only the pending rule can refuse the row
+        insert = "INSERT INTO proposals VALUES (?, 'A', 'item-1', 'RULE', 'pro-a2', ?, ?, ?)"
+        evidence = json.dumps(self.EVIDENCE)
+        for status in ("APPROVED", "REJECTED"):  # decided, even without an approver
+            self.refused(insert, (f"p-{status}", evidence, status, None), msg=status)
+        self.assertEqual(self.count("proposals"), 0)
+        self.conn.execute(insert, ("p-pending", evidence, "PENDING", None))
+        self.assertEqual(self.conn.execute("SELECT id, status, decided_by FROM proposals").fetchall(),
+                         [("p-pending", "PENDING", None)])
+
+    def test_c6_decision_from_another_tenant_session_is_refused(self):
+        pid = self.bench(tenant="A").propose("item-1", "pro-a2", self.EVIDENCE)
+        self.session("B")  # the approver belongs to the proposal's tenant, but the session does not
+        for status in ("APPROVED", "REJECTED"):
+            self.refused("UPDATE proposals SET status = ?, decided_by = 'coord-a' WHERE id = ?", (status, pid), msg=status)
+        self.refused("UPDATE proposals SET decided_by = 'coord-a' WHERE id = ?", (pid,))
+        self.assertEqual(self.conn.execute("SELECT status, decided_by FROM proposals").fetchall(), [("PENDING", None)])
+        self.session("A")
+        self.conn.execute("UPDATE proposals SET status = 'APPROVED', decided_by = 'coord-a' WHERE id = ?", (pid,))
+        self.assertEqual(self.conn.execute("SELECT status, decided_by FROM proposals").fetchall(), [("APPROVED", "coord-a")])
 
     def test_c6_effect_across_tenants_is_refused(self):
         self.bench(tenant="A")

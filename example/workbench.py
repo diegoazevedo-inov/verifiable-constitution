@@ -38,7 +38,7 @@ CREATE TRIGGER proposals_evidence_items BEFORE INSERT ON proposals
          OR json_extract(e.value, '$.code') NOT GLOB '[A-Z]*'
          OR json_extract(e.value, '$.code') GLOB '*[^A-Z0-9_]*'
          OR coalesce(json_type(e.value, '$.value'), '') NOT IN ('text', 'integer', 'real')
-         OR (json_type(e.value, '$.value') = 'text' AND trim(json_extract(e.value, '$.value')) = ''))
+         OR (json_type(e.value, '$.value') = 'text' AND trim(json_extract(e.value, '$.value'), ' ' || char(9, 10, 11, 12, 13)) = ''))
     ELSE 0 END
   BEGIN SELECT RAISE(ABORT, 'evidence item without code or value'); END;
 CREATE TRIGGER proposals_immutable_when_decided BEFORE UPDATE ON proposals
