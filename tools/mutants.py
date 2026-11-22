@@ -123,6 +123,17 @@ def c3a_whitespace_value_accepted():  # the database takes a value of tabs or li
                           "trim(json_extract(e.value, '$.value')) = ''")
 
 
+def c3a_service_whitespace_accepted():  # the service takes a white-space value as non-empty (no str.strip())
+    original = wb.assert_evidence
+
+    def assert_evidence(evidence):
+        if isinstance(evidence, list):
+            evidence = [{**item, "value": "X"} if isinstance(item, dict) and isinstance(item.get("value"), str)
+                        and item["value"] and not item["value"].strip() else item for item in evidence]
+        original(evidence)
+    return patched(wb, "assert_evidence", assert_evidence)
+
+
 def c3b():  # confidence accepted as evidence
     return patched(wb, "CONFIDENCE_CODE", __import__("re").compile(r"$^"))
 
@@ -358,7 +369,8 @@ MUTANTS = {
     "C2.a": [("model may name any id", c2a)],
     "C3.a": [("evidence enforced neither in the service nor in the database", c3a),
              ("database accepts evidence items without code or value", c3a_items_unchecked),
-             ("database accepts a value made only of tabs or line breaks", c3a_whitespace_value_accepted)],
+             ("database accepts a value made only of tabs or line breaks", c3a_whitespace_value_accepted),
+             ("service accepts a value made only of white space", c3a_service_whitespace_accepted)],
     "C3.b": [("confidence codes accepted as evidence", c3b),
              ("confidence refused only as the single evidence item", c3b_single_item_only),
              ("confidence words matched inside other words", c3b_substring_rule),

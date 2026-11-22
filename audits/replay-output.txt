@@ -1,0 +1,24 @@
+Python 3.14.4
+Baseline (no defect): unittest exit 0 (OK); coverage exit 0 (table)
+
+| Defect | Description | unittest | coverage | Outcome |
+|---|---|---|---|---|
+| V1 | Insert-pending trigger without the status check | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V2 | Insert-pending trigger without the approver check | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V3 | Decision trigger without the session-tenant check | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V4 | Decision trigger without the approver check | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V5 | Confidence refused only with one evidence item | exit 1 (failures=1) | exit 1 (table) | caught |
+| V6 | Confidence refused only up to two evidence items | exit 1 (failures=1) | exit 1 (table) | caught |
+| V7 | Confidence pattern matches only the whole code | exit 1 (failures=4) | exit 1 (traceback) | caught |
+| V8 | Confidence pattern without the leading delimiter | exit 1 (failures=1, errors=1) | exit 1 (traceback) | caught |
+| V9 | Confidence pattern without the trailing delimiter | exit 1 (failures=1, errors=1) | exit 1 (traceback) | caught |
+| V10 | Confidence pattern with word boundaries | exit 1 (failures=4) | exit 1 (traceback) | caught |
+| V11 | Evidence trigger trim without vertical tab and form feed | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V12 | Evidence trigger trim without carriage return | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V13 | Evidence trigger trim without tab | exit 1 (failures=2) | exit 1 (traceback) | caught |
+| V14 | PRAGMA recursive_triggers line removed from connect() | exit 1 (failures=13) | exit 1 (table) | caught |
+| V15 | Work-item insert trigger without the session check | exit 1 (failures=1) | exit 1 (table) | caught |
+| V16 | User identity trigger without tenant | exit 1 (failures=3) | exit 1 (table) | caught |
+| V17 | Service evidence check without str.strip() | exit 1 (failures=1) | exit 1 (table) | caught |
+
+Totals: 17 defects, 17 applied, 17 caught, 0 not caught.

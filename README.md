@@ -23,6 +23,7 @@ Reach is **declared** by the author in the constitution, not measured; `tools/co
 | `checks/test_coverage_tool.py` | Self-test of the measuring tool: a no-op planted violation must be reported as a blind detector and make the tool exit with a non-zero code |
 | `docs/adr/` | Decision records referenced by the example (checked by C10) |
 | `case-study/` | Anonymised coverage measurements of one real system and the agreement script (see below) |
+| `audits/` | Defects planted against the detectors by four audit rounds, a replay of the last round and its stored outputs (see `audits/README.md`) |
 
 ## Running
 
@@ -40,6 +41,10 @@ C1 Deterministic core; the model only proposes · C2 The model chooses, it does 
 ## Case study
 
 `case-study/` holds the anonymised data of three coverage measurements of a multi-tenant medical imaging platform under development by the author: the class of each of its 16 principles in the three measurements, the clause-level classification of the second and third, and a script that reproduces the agreement between assessors (raw agreement, Cohen's kappa and linearly weighted kappa). `checks/test_case_study.py` checks those numbers in the same CI run. The repository supports the arithmetic and the consistency of these data, not the classifications themselves. See `case-study/README.md` for the method and its limitations.
+
+## Audit rounds
+
+`audits/` records four audit rounds in which a separate session (author's account) planted its own defects in copies of the repository and ran the CI on each: 1 of 8 caught in the first round, 17 of 19 (one equivalent) in the second, 14 of 18 in the third and 16 of 17 in the fourth. Each defect not caught led to a fix in a later version. The first three rounds are the author's transcription of reports on commits that predate the public history; the fourth is reproduced by `audits/replay.py`, whose stored outputs show 16 of 17 caught at v1.2 and 17 of 17 in this version. `checks/test_audits.py` checks those records in the same CI run.
 
 ## Limits
 

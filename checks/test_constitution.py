@@ -117,6 +117,15 @@ class C3(Base):
         self.conn.execute(insert, ("x", json.dumps([{"code": "OPEN_LOAD", "value": "\tbusy\n"}])))
         self.assertEqual(self.count("proposals"), 1, "a value with text around white space must be accepted")
 
+    def test_c3_service_rejects_whitespace_only_value(self):
+        # Unicode white space that the database trigger does not trim: only the service can refuse it
+        for value in ("\xa0", "\u2003", "\x85", " \xa0\t"):
+            with self.assertRaises(wb.EvidenceError, msg=repr(value)):
+                self.bench().propose("item-1", "pro-a2", [{"code": "OPEN_LOAD", "value": value}])
+        self.assertEqual(self.count("proposals"), 0)
+        self.bench().propose("item-1", "pro-a2", [{"code": "OPEN_LOAD", "value": "\xa0busy"}])
+        self.assertEqual(self.count("proposals"), 1, "a value with text around white space must be accepted")
+
     def test_c3_confidence_is_not_evidence(self):
         for ev in ([{"code": "CONFIDENCE", "value": 0.9}], [{"code": "MODEL_SCORE", "value": 0.8}]):
             with self.assertRaises(wb.EvidenceError):

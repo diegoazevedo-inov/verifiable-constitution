@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite it using the metadata below."
 title: "Verifiable constitution: binding each principle of an LLM-agent system to an executable check"
-abstract: "A domain-neutral template of ten principles (C1–C10) for software systems that embed large language model agents, in which each principle carries 'Prohibits:' clauses bound to executable verifications. A minimal example in Python and SQLite implements the clauses; every verification is exercised by planted violations, and a coverage script reports, per clause, whether the check exists and is seen failing, together with the reach declared for it. The repository also holds anonymised per-principle and per-clause data from three coverage measurements of one system and a script that reproduces the agreement between assessors."
+abstract: "A domain-neutral template of ten principles (C1–C10) for software systems that embed large language model agents, in which each principle carries 'Prohibits:' clauses bound to executable verifications. A minimal example in Python and SQLite implements the clauses; every verification is exercised by planted violations, and a coverage script reports, per clause, whether the check exists and is seen failing, together with the reach declared for it. The repository also holds anonymised per-principle and per-clause data from three coverage measurements of one system and a script that reproduces the agreement between assessors, and records of four audit rounds that planted defects against the detectors, with a replay of the last round."
 type: software
 authors:
   - given-names: "Diêgo da Silva"
     family-names: "Azevedo"
     orcid: "https://orcid.org/0009-0009-1839-7476"
-version: "1.2"
+version: "1.3"
 doi: "10.5281/zenodo.24378947"
 repository-code: "https://github.com/diegoazevedo-inov/verifiable-constitution"
 license: Apache-2.0

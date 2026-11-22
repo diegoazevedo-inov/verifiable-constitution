@@ -1,0 +1,63 @@
+round,audited_commit,defect,description,unittest,coverage,outcome
+1,f5517df,D1,Approver looked up without tenant filter: a coordinator of tenant B approves a proposal of tenant A,pass,exit 0,not_caught
+1,f5517df,D2,Evaluation gate no longer compares the model,pass,exit 0,not_caught
+1,f5517df,D3,Rejection no longer recorded in the trail,pass,exit 0,not_caught
+1,f5517df,D4,Agent signature loses the model field,pass,exit 0,not_caught
+1,f5517df,D5,Effect (update of work items) without tenant filter,pass,exit 0,not_caught
+1,f5517df,D6,Coverage tool always reports the detector as working (caught = True),pass,exit 0,not_caught
+1,f5517df,D7,Module docstring replaces the decision-record references with a vague mention of docs/adr/,pass,exit 0,not_caught
+1,f5517df,D8,Candidates read without tenant filter,fail (C2),exit 1,caught
+2,3531aef,D1,Approver role read from the users table instead of the tenant-scoped view,error (C6.c),exit 1,caught
+2,3531aef,D1db,Decision trigger does not check the approver,fail (C6.c),exit 1,caught
+2,3531aef,D2,Evaluation gate does not compare the model,fail (C8),exit 1,caught
+2,3531aef,D2t,Evaluation gate does not compare the task,fail (C8),exit 1,caught
+2,3531aef,D3,Rejection not recorded,fail (C4),exit 1,caught
+2,3531aef,D4,Agent signature without model,fail (C5),exit 1,caught
+2,3531aef,D5,Effect without tenant filter in the service only,pass,exit 0,equivalent
+2,3531aef,D5db,Effect trigger does not check the assignee's tenant,fail (C6.d),exit 1,caught
+2,3531aef,D6,Coverage tool: caught = True,fail (tool self-test),exit 0,caught
+2,3531aef,D6b,Coverage tool ignores a failure on the example,fail (tool self-test),exit 0,caught
+2,3531aef,D6c,Coverage tool does not propagate its result to the exit code,fail (tool self-test),exit 0,caught
+2,3531aef,D7,Module docstring with a vague mention of docs/adr/,fail (C10),exit 1,caught
+2,3531aef,D8,Candidates read from the users table,fail (C2; C6),exit 1,caught
+2,3531aef,T1,Proposal tenant trigger without the target check,fail (C6.b),exit 1,caught
+2,3531aef,T2,Proposal tenant trigger without the item check,fail (C6.b),exit 1,caught
+2,3531aef,T3,Proposal tenant trigger without the session-tenant check,fail (C6.b),exit 1,caught
+2,3531aef,T4,Work-item trigger without the tenant-change check,fail (C6.d),exit 1,caught
+2,3531aef,T5,Proposal content trigger without proposer and evidence,pass,exit 0,not_caught
+2,3531aef,T6,Read recorded without the ids read,error (C5.c),exit 1,caught
+3,2d73551,M1,Insert-pending trigger without the approver check,fail (C6.c),exit 1,caught
+3,2d73551,M2,Insert-pending trigger without the status check,pass,exit 0,not_caught
+3,2d73551,M3,Work-item insert trigger without the session check,fail (C6.d),exit 1,caught
+3,2d73551,M4,Work-item insert trigger without the assignee check,fail (C6.d),exit 1,caught
+3,2d73551,M5,Referenced-user retention trigger without the approver,fail (C6.c),exit 1,caught
+3,2d73551,M6,Decision trigger without the session-tenant check,pass,exit 0,not_caught
+3,2d73551,M7,User identity trigger without tenant,fail (C6),exit 1,caught
+3,2d73551,M8,PRAGMA recursive_triggers line removed from connect(),fail (13 tests),exit 1,caught
+3,2d73551,M9,Referenced-user retention trigger without the proposal target,fail (C6.b),exit 1,caught
+3,2d73551,M10,Proposal tenant trigger without the target check,fail (C6.b),exit 1,caught
+3,2d73551,M11,Referenced-user retention trigger without the assignee,fail (C6.d),exit 1,caught
+3,2d73551,M12,Proposal tenant trigger without the session check,fail (C6.b),exit 1,caught
+3,2d73551,M13,Evidence trigger does not refuse an empty text value,fail (C3.a),exit 1,caught
+3,2d73551,M14,Coverage tool ignores a failure on the example,fail (tool self-test),exit 0,caught
+3,2d73551,M15,Confidence refused only when it is the single evidence item,pass,exit 0,not_caught
+3,2d73551,D6,Coverage tool: caught = True,fail (tool self-test),exit 0,caught
+3,2d73551,D6c,Coverage tool does not propagate its result to the exit code,fail (tool self-test),exit 0,caught
+3,2d73551,D3b,Test of C3.b without the MODEL_SCORE case,pass,exit 0,not_caught
+4,44db3d2,V1,Insert-pending trigger without the status check,fail (C6.c),exit 1,caught
+4,44db3d2,V2,Insert-pending trigger without the approver check,fail (C6.c),exit 1,caught
+4,44db3d2,V3,Decision trigger without the session-tenant check,fail (C6.c),exit 1,caught
+4,44db3d2,V4,Decision trigger without the approver check,fail (C6.c),exit 1,caught
+4,44db3d2,V5,Confidence refused only with one evidence item,fail (C3.b),exit 1,caught
+4,44db3d2,V6,Confidence refused only up to two evidence items,fail (C3.b),exit 1,caught
+4,44db3d2,V7,Confidence pattern matches only the whole code,fail (C3.b),exit 1,caught
+4,44db3d2,V8,Confidence pattern without the leading delimiter,fail (C3.b),exit 1,caught
+4,44db3d2,V9,Confidence pattern without the trailing delimiter,fail (C3.b),exit 1,caught
+4,44db3d2,V10,Confidence pattern with word boundaries (\b),fail (C3.b),exit 1,caught
+4,44db3d2,V11,Evidence trigger trim without vertical tab and form feed,fail (C3.a),exit 1,caught
+4,44db3d2,V12,Evidence trigger trim without carriage return,fail (C3.a),exit 1,caught
+4,44db3d2,V13,Evidence trigger trim without tab,fail (C3.a),exit 1,caught
+4,44db3d2,V14,PRAGMA recursive_triggers line removed from connect(),fail (13 tests),exit 1,caught
+4,44db3d2,V15,Work-item insert trigger without the session check,fail (C6.d),exit 1,caught
+4,44db3d2,V16,User identity trigger without tenant,fail (C6),exit 1,caught
+4,44db3d2,V17,Service evidence check without str.strip() (accepts a white-space value),pass,exit 0,not_caught

@@ -27,7 +27,7 @@ CHECKS = {
     "C1.b": ["C1.test_c1_rule_is_the_floor_when_model_fails"],
     "C2.a": ["C2.test_c2_out_of_list_choice_is_discarded"],
     "C3.a": ["C3.test_c3_empty_evidence_is_rejected", "C3.test_c3_database_rejects_proposal_without_evidence",
-             "C3.test_c3_database_rejects_whitespace_only_value"],
+             "C3.test_c3_database_rejects_whitespace_only_value", "C3.test_c3_service_rejects_whitespace_only_value"],
     "C3.b": ["C3.test_c3_confidence_is_not_evidence", "C3.test_c3_confidence_only_evidence_with_several_items_is_rejected",
              "C3.test_c3_confidence_is_recognised_as_a_word"],
     "C4.a": ["C4.test_c4_effect_belongs_to_the_approver", "C4.test_c4_rejection_is_recorded_under_the_approver"],

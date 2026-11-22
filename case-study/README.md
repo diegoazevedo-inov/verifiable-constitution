@@ -1,6 +1,6 @@
 # Case study: three coverage measurements
 
-Anonymised data of the case study in the accompanying manuscript (D. S. Azevedo, "Verifiable constitutions for LLM-agent systems in regulated domains: binding each principle to an executable check", submitted to the Journal of Systems and Software in November 2026): the per-principle and per-clause verification coverage of one system, measured three times, and the script that computes the agreement between assessors.
+Anonymised data of the case study in the accompanying manuscript (D. S. Azevedo, "Verifiable constitutions for LLM-agent systems in regulated domains: binding each principle to an executable check", preprint, version 1, 22 November 2026, https://doi.org/10.5281/zenodo.24442875): the per-principle and per-clause verification coverage of one system, measured three times, and the script that computes the agreement between assessors.
 
 What this repository supports: the arithmetic (totals, raw agreement, kappa and weighted kappa) and the consistency between the clause files and the principle classes, both checked by `checks/test_case_study.py`. It does not support the classifications themselves, which are the author's transcription of the assessors' reports; neither the reports nor the measured code are included.
 
